@@ -41,7 +41,21 @@
         button:hover {
             background-color: #c82333;
         }
+        #results {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            display: none;
+        }
     </style>
+    <script>
+        function searchDonors() {
+            let resultsDiv = document.getElementById('results');
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = '<p>عرض نتائج البحث هنا...</p>';
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -62,6 +76,8 @@
         <input type="text" id="city-search" placeholder="أدخل اسم المدينة">
         
         <button onclick="searchDonors()">بحث</button>
+        
+        <div id="results"></div>
         
         <h3>تسجيل كمتبرع</h3>
         <label for="donor-name">الاسم:</label>
