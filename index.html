@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البحث عن متبرعي الدم</title>
+    <style>
+        body { font-family: Arial, sans-serif; direction: rtl; text-align: right; }
+        .container { width: 80%; margin: auto; }
+        label, select, input { display: block; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>البحث عن متبرعي الدم</h2>
+        <label for="blood-type">اختر فصيلة الدم:</label>
+        <select id="blood-type">
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+        </select>
+        
+        <label for="city-search">ابحث عن المدينة:</label>
+        <input type="text" id="city-search" placeholder="أدخل اسم المدينة">
+        
+        <button onclick="searchDonors()">بحث</button>
+        
+        <h3>تسجيل كمتبرع</h3>
+        <label for="donor-name">الاسم:</label>
+        <input type="text" id="donor-name">
+
+        <label for="donor-blood-type">فصيلة الدم:</label>
+        <select id="donor-blood-type">
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+        </select>
+        
+        <label for="country">الدولة:</label>
+        <select id="country" onchange="loadStates()">
+            <option value="">اختر الدولة</option>
+            <option value="dz">الجزائر</option>
+            <option value="eg">مصر</option>
+            <option value="ma">المغرب</option>
+            <option value="sa">السعودية</option>
+        </select>
+
+        <label for="state">الولاية:</label>
+        <select id="state" onchange="loadCities()">
+            <option value="">اختر الولاية</option>
+        </select>
+
+        <label for="city">المدينة:</label>
+        <select id="city">
+            <option value="">اختر المدينة</option>
+        </select>
+        
+        <button onclick="registerDonor()">تسجيل</button>
+    </div>
+
+    <script>
+        const statesData = {
+            "dz": {
+                "أدرار": ["أدرار", "تيميمون", "رقان", "برج باجي مختار", "أولف", "تسابيت", "زاوية كنتة"],
+                "الشلف": ["الشلف", "تنيس", "بوقادير", "وادي الفضة", "المرسى", "الهرانفة", "أولاد فارس"],
+                "الأغواط": ["الأغواط", "أفلو", "حاسي الرمل", "قلتة سيدي سعد", "عين ماضي", "تاجموت", "سيدي مخلوف"],
+                "أم البواقي": ["أم البواقي", "عين البيضاء", "عين مليلة", "سيقوس", "الضلعة", "العامرية", "الزرق"],
+                "باتنة": ["باتنة", "عين التوتة", "آريس", "مروانة", "بريكة", "سريانة", "تكوت"],
+                "بجاية": ["بجاية", "أميزور", "سيدي عيش", "تازملت", "خراطة", "درقينة", "القصر"],
+                "بسكرة": ["بسكرة", "أورلال", "زريبة الوادي", "القنطرة", "أولاد جلال", "فوغالة", "مشونش"],
+                "بشار": ["بشار", "القنادسة", "تبلبالة", "بني ونيف", "العبادلة", "كرزاز", "موغل"],
+                "تلمسان": ["تلمسان", "مغنية", "الغزوات", "ندرومة", "سبدو", "حناية", "الرمشي"],
+                "الجلفة": ["الجلفة", "عين وسارة", "حاسي بحبح", "مسعد", "البيرين", "دار الشيوخ", "الإدريسية", "فيض البطمة"]
+            },
+            "eg": {
+                "القاهرة": ["مدينة نصر", "المعادي", "الزمالك", "حلوان", "شبرا", "التجمع الخامس"],
+                "الإسكندرية": ["سموحة", "العجمي", "محرم بك", "المنتزه", "برج العرب"],
+                "الجيزة": ["الدقي", "المهندسين", "6 أكتوبر", "الشيخ زايد", "العياط"]
+            },
+            "ma": {
+                "الدار البيضاء": ["عين السبع", "المعاريف", "الحي الحسني", "البرنوصي", "بوسكورة"],
+                "الرباط": ["أكدال", "حسان", "يعقوب المنصور", "السويسي", "تمارة"],
+                "مراكش": ["المدينة", "كليز", "المنارة", "سيدي يوسف بن علي", "النخيل"]
+            },
+            "sa": {
+                "الرياض": ["الملز", "العليا", "السويدي", "النخيل", "الدرعية", "الشفا"],
+                "جدة": ["التحلية", "الكورنيش", "البغدادية", "الحمراء", "الصفا"],
+                "الدمام": ["الشاطئ", "العزيزية", "الحمراء", "الريان", "الروضة"]
+            }
+        };
+    </script>
+</body>
+</html>
