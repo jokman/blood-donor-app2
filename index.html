@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>البحث عن متبرعي الدم</title>
+    <title>🔍 البحث عن متبرعي الدم ❤️</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -48,19 +48,29 @@
             border-radius: 5px;
             display: none;
         }
+        .lang-switch {
+            text-align: left;
+            margin-bottom: 10px;
+        }
     </style>
     <script>
         function searchDonors() {
             let resultsDiv = document.getElementById('results');
             resultsDiv.style.display = 'block';
-            resultsDiv.innerHTML = '<p>عرض نتائج البحث هنا...</p>';
+            resultsDiv.innerHTML = '<p>🔎 عرض نتائج البحث هنا...</p>';
+        }
+        function switchLanguage() {
+            alert("🚀 ميزة تغيير اللغة قيد التطوير!");
         }
     </script>
 </head>
 <body>
     <div class="container">
-        <h2>البحث عن متبرعي الدم</h2>
-        <label for="blood-type">اختر فصيلة الدم:</label>
+        <div class="lang-switch">
+            <button onclick="switchLanguage()">🌍 تغيير اللغة</button>
+        </div>
+        <h2>🔍 البحث عن متبرعي الدم ❤️</h2>
+        <label for="blood-type">🩸 اختر فصيلة الدم:</label>
         <select id="blood-type">
             <option value="A+">A+</option>
             <option value="A-">A-</option>
@@ -72,18 +82,18 @@
             <option value="AB-">AB-</option>
         </select>
         
-        <label for="city-search">ابحث عن المدينة:</label>
+        <label for="city-search">🏙️ ابحث عن المدينة:</label>
         <input type="text" id="city-search" placeholder="أدخل اسم المدينة">
         
-        <button onclick="searchDonors()">بحث</button>
+        <button onclick="searchDonors()">🔍 بحث</button>
         
         <div id="results"></div>
         
-        <h3>تسجيل كمتبرع</h3>
-        <label for="donor-name">الاسم:</label>
+        <h3>🤝 تسجيل كمتبرع</h3>
+        <label for="donor-name">👤 الاسم:</label>
         <input type="text" id="donor-name" placeholder="أدخل اسمك">
 
-        <label for="donor-blood-type">فصيلة الدم:</label>
+        <label for="donor-blood-type">🩸 فصيلة الدم:</label>
         <select id="donor-blood-type">
             <option value="A+">A+</option>
             <option value="A-">A-</option>
@@ -95,26 +105,26 @@
             <option value="AB-">AB-</option>
         </select>
         
-        <label for="country">الدولة:</label>
+        <label for="country">🌍 الدولة:</label>
         <select id="country" onchange="loadStates()">
             <option value="">اختر الدولة</option>
-            <option value="dz">الجزائر</option>
-            <option value="eg">مصر</option>
-            <option value="ma">المغرب</option>
-            <option value="sa">السعودية</option>
+            <option value="dz">🇩🇿 الجزائر</option>
+            <option value="eg">🇪🇬 مصر</option>
+            <option value="ma">🇲🇦 المغرب</option>
+            <option value="sa">🇸🇦 السعودية</option>
         </select>
 
-        <label for="state">الولاية:</label>
+        <label for="state">📍 الولاية:</label>
         <select id="state" onchange="loadCities()">
             <option value="">اختر الولاية</option>
         </select>
 
-        <label for="city">المدينة:</label>
+        <label for="city">🏙️ المدينة:</label>
         <select id="city">
             <option value="">اختر المدينة</option>
         </select>
         
-        <button onclick="registerDonor()">تسجيل</button>
+        <button onclick="registerDonor()">✅ تسجيل</button>
     </div>
 </body>
 </html>
