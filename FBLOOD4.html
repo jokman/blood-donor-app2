@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donor Finder</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-color: #f8f9fa; 
+            color: #343a40; 
+        }
+        #map { 
+            height: 400px; 
+            width: 100%; 
+            margin-top: 10px; 
+            border: 2px solid #dc3545; 
+            border-radius: 5px; 
+        }
+        h1, h2 { color: #dc3545; }
+        select, input, button {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+        .icon {
+            margin-right: 5px;
+        }
+        .ad-space {
+            margin: 20px 0;
+            text-align: center;
+            background: #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="title">🩸 Blood Donor Finder</h1>
+    <button onclick="toggleLanguage()">🌍 Change Language</button>
+    <label for="bloodType" id="chooseBloodLabel">🔍 Choose Blood Type:</label>
+    <select id="bloodType">
+        <option value="A+">A+</option>
+        <option value="A-">A-</option>
+        <option value="B+">B+</option>
+        <option value="B-">B-</option>
+        <option value="O+">O+</option>
+        <option value="O-">O-</option>
+        <option value="AB+">AB+</option>
+        <option value="AB-">AB-</option>
+    </select>
+    <button onclick="searchDonors()">🔎 Search</button>
+    <div id="map"></div>
+
+    <div class="ad-space">
+        <!-- Google AdSense Ad Placeholder -->
+        <p>Advertisement</p>
+    </div>
+    
+    <h2 id="registerTitle">❤️ Register as a Donor</h2>
+    <input type="text" id="name" placeholder="🧑 Your Name">
+    <input type="text" id="contact" placeholder="📞 Contact Info">
+    <select id="donorBloodType">
+        <option value="A+">A+</option>
+        <option value="A-">A-</option>
+        <option value="B+">B+</option>
+        <option value="B-">B-</option>
+        <option value="O+">O+</option>
+        <option value="O-">O-</option>
+        <option value="AB+">AB+</option>
+        <option value="AB-">AB-</option>
+    </select>
+    <input type="text" id="location" placeholder="📍 Your Location">
+    <button onclick="registerDonor()">📝 Register</button>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_FIREBASE_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+            projectId: "YOUR_PROJECT",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        function initMap() {
+            window.map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: -34.397, lng: 150.644 },
+                zoom: 6
+            });
+        }
+
+        function registerDonor() {
+            const name = document.getElementById("name").value;
+            const contact = document.getElementById("contact").value;
+            const bloodType = document.getElementById("donorBloodType").value;
+            const location = document.getElementById("location").value;
+            
+            if (name && contact && location) {
+                database.ref("donors").push({
+                    name,
+                    contact,
+                    bloodType,
+                    location
+                }).then(() => {
+                    alert("Donor registered successfully!");
+                    location.reload();
+                });
+            } else {
+                alert("Please fill all fields.");
+            }
+        }
+
+        function searchDonors() {
+            const selectedType = document.getElementById("bloodType").value;
+            database.ref("donors").once("value", (snapshot) => {
+                const donors = snapshot.val();
+                for (let key in donors) {
+                    if (donors[key].bloodType === selectedType) {
+                        new google.maps.Marker({
+                            position: { lat: -34.397, lng: 150.644 },
+                            map: map,
+                            title: donors[key].name
+                        });
+                    }
+                }
+            });
+        }
+
+        function toggleLanguage() {
+            let lang = document.documentElement.lang === "en" ? "ar" : "en";
+            document.documentElement.lang = lang;
+            document.getElementById("title").innerText = lang === "ar" ? "🔴 العثور على متبرع بالدم" : "🩸 Blood Donor Finder";
+            document.getElementById("chooseBloodLabel").innerText = lang === "ar" ? "🔍 اختر فصيلة الدم:" : "🔍 Choose Blood Type:";
+            document.getElementById("registerTitle").innerText = lang === "ar" ? "❤️ سجل كمتبرع" : "❤️ Register as a Donor";
+        }
+    </script>
+</body>
+</html>

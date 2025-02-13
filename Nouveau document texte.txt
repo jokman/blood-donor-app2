@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donor Finder</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #map { height: 400px; width: 100%; }
+    </style>
+</head>
+<body>
+    <h1>Blood Donor Finder</h1>
+    <label for="bloodType">Choose Blood Type:</label>
+    <select id="bloodType">
+        <option value="A+">A+</option>
+        <option value="A-">A-</option>
+        <option value="B+">B+</option>
+        <option value="B-">B-</option>
+        <option value="O+">O+</option>
+        <option value="O-">O-</option>
+        <option value="AB+">AB+</option>
+        <option value="AB-">AB-</option>
+    </select>
+    <button onclick="searchDonors()">Search</button>
+    <div id="map"></div>
+    <h2>Register as a Donor</h2>
+    <input type="text" id="name" placeholder="Your Name">
+    <input type="text" id="contact" placeholder="Contact Info">
+    <button onclick="registerDonor()">Register</button>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_FIREBASE_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+            projectId: "YOUR_PROJECT",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        function initMap() {
+            window.map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: -34.397, lng: 150.644 },
+                zoom: 6
+            });
+        }
+
+        function registerDonor() {
+            const name = document.getElementById("name").value;
+            const contact = document.getElementById("contact").value;
+            const bloodType = document.getElementById("bloodType").value;
+            
+            if (name && contact) {
+                database.ref("donors").push({
+                    name,
+                    contact,
+                    bloodType,
+                    location: { lat: -34.397, lng: 150.644 } // Static for now
+                });
+                alert("Donor registered successfully!");
+            } else {
+                alert("Please fill all fields.");
+            }
+        }
+
+        function searchDonors() {
+            const selectedType = document.getElementById("bloodType").value;
+            database.ref("donors").once("value", (snapshot) => {
+                const donors = snapshot.val();
+                for (let key in donors) {
+                    if (donors[key].bloodType === selectedType) {
+                        new google.maps.Marker({
+                            position: donors[key].location,
+                            map: map,
+                            title: donors[key].name
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
